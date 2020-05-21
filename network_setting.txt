@@ -1,0 +1,98 @@
+please see more details in 
+https://hadoop.apache.org/docs/r2.10.0/hadoop-project-dist/hadoop-common/ClusterSetup.html
+
+"Typically one machine in the cluster is designated as the NameNode and another machine as the ResourceManager, exclusively. These are the masters."
+"The rest of the machines in the cluster act as both DataNode and NodeManager. "
+
+1. interface
+sudo vim /etc/network/interfaces
+
+# NAT interface, Ubuntu 16.4
+auto enp0s3
+iface eth0 inet dhcp # Dynamic Host Configuration Protocol
+
+auto enp0s3
+iface eth1 inet static
+address         192.168.56.101
+netmask         255.255.255.0
+network         192.168.56.0
+broadcast       192.168.56.255
+
+2. hostname
+sudo vim /etc/hostname
+data1
+
+3. hosts
+
+add
+# hadoop setting
+192.168.56.100  master
+192.168.56.101  data1
+192.168.56.102  data2
+192.168.56.103  data3
+
+4. core-site.xml
+sudo vim /usr/local/hadoop/etc/hadoop/core-site.xml 
+#set namenode
+<configuration>
+        <property>
+                <name>fs.defaultFS</name>
+                <value>hdfs://master:9000</value>
+        </property>
+</configuration>
+
+5.  sudo vim /usr/local/hadoop/etc/hadoop/yarn-site.xml 
+#set resource manager information
+add 
+	<property>
+                <name>yarn.resourcemanager.resource-tracker.address</name>
+                <value>master:8025</value>
+        </property>
+        <property>
+                <name>yarn.resourcemanager.scheduler.address</name>
+                <value>master:8030</value>
+        </property>
+        <property>
+                <name>yarn.resourcemanager.address</name>
+                <value>master:8050</value>
+        </property>
+
+6. sudo vim /usr/local/hadoop/etc/hadoop/mapred-site.xml
+	<property>
+                <name>mapred.job.tracker</name>
+                <value>master:54311</value>
+        </property>
+
+7. sudo vim /usr/local/hadoop/etc/hadoop/hdfs-site.xml 
+        <property>
+                <name>dfs.datanode.data.dir</name>
+                <value>file:/usr/local/hadoop/hadoop_data/hdfs/datanode</value>
+        </property>
+
+## master
+
+
+1. sudo vim /etc/network/interfaces
+
+address         192.168.56.100
+
+2. sudo vim /etc/hostname
+master
+
+3. sudo vim /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+<property>
+                <name>dfs.datanode.data.dir</name>
+                <value>file:/usr/local/hadoop/hadoop_data/hdfs/namenode</value>
+</property>
+
+4. vim /usr/local/hadoop/etc/hadoop/masters
+master
+
+5. vim /usr/local/hadoop/etc/hadoop/slaves
+data1
+
+
+
+
+
+
