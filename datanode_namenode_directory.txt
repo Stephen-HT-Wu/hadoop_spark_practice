@@ -1,0 +1,25 @@
+# on data1
+cd /usr/local/hadoop
+mkdir hadoop_data
+mkdir hadoop_data/hdfs
+mkdir hadoop_data/hdfs/datanode
+
+# on master 
+mkdir hadoop_data
+mkdir hadoop_data/hdfs
+mkdir hadoop_data/hdfs/namenode
+
+# format namenode 
+hadoop namenode -format
+
+# start dfs and yarn together
+start-all.sh 
+
+# watch java processes
+jps
+
+#bashrc
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export HADOOP_HOME=/usr/local/hadoop/
+export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+
