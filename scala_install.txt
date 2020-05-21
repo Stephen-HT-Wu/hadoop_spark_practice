@@ -1,0 +1,48 @@
+# download and move
+sudo mv scala-2.13.2/ /usr/local/scala
+
+# add scala variables in bashrc
+cd ~
+
+vim .bashrc
+
+export SCALA_HOME=/usr/local/scala
+export PATH=$PATH:$SCALA_HOME/bin
+
+. .bashrc
+
+# test 
+scala
+
+## Spark
+# download
+cd ~/Downloads/spark
+wget http://ftp.twaren.net/Unix/Web/apache/spark/spark-2.4.5/spark-2.4.5-bin-hadoop2.7.tgz
+
+tar zxf spark-2.4.5-bin-hadoop2.7.tgz
+
+sudo mv spark-2.4.5-bin-hadoop2.7 /usr/local/spark
+
+cd ~
+
+vim .bashrc
+
+export SPARK_HOME=/usr/local/spark
+export PATH=$PATH:$SPARK_HOME/bin
+
+. .bashrc
+
+# test
+pyspark
+
+# log4j
+cd /usr/local/spark/conf
+cp log4j.properties.template log4j.properties
+
+vim log4j.properties
+log4j.rootCategory=WARN, console
+
+
+
+
+
